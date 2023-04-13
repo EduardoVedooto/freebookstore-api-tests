@@ -1,72 +1,62 @@
 import { BookCreate } from "interfaces/BookCreate";
-import connectionDb from "../config/database";
+import prisma from "config/database";
+import { books, mybooks, users } from "@prisma/client";
 
-async function create({ name, author, userId, available }: BookCreate) {
-  await connectionDb.query(
-    `
-        INSERT INTO books (name, author, "userId", available)
-        VALUES ($1, $2, $3, $4);`,
-    [name, author, userId, available]
-  );
+async function create({
+  name,
+  author,
+  userId,
+  available,
+}: BookCreate): Promise<void> {
+  await prisma.books.create({
+    data: {
+      name,
+      author,
+      userId,
+      available,
+    },
+  });
 }
 
-async function findAll() {
-  return await connectionDb.query(`
-      SELECT b.name, b.author FROM books b 
-      JOIN users u ON b."userId" = u.id;
-    `);
+async function findAll(): Promise<books[]> {
+  return await prisma.books.findMany();
 }
 
-async function findByName(name: string) {
-  return await connectionDb.query(
-    `
-          SELECT * FROM books 
-          WHERE name = $1;
-      `,
-    [name]
-  );
+async function findByName(name: string): Promise<books> {
+  return await prisma.books.findUnique({ where: { name } });
 }
 
-async function findById(id: number) {
-  return await connectionDb.query(
-    `
-          SELECT * FROM books 
-          WHERE id = $1;
-      `,
-    [id]
-  );
+async function findById(id: number): Promise<books> {
+  return await prisma.books.findUnique({ where: { id } });
 }
 
-async function takeBook(userId: number, bookId: number) {
-  await connectionDb.query(
-    `
-      UPDATE books
-      SET available = $1
-      WHERE id = $2;
-  `,
-    [false, bookId]
-  );
+async function takeBook(userId: number, bookId: number): Promise<void> {
+  await prisma.books.update({
+    where: { id: bookId },
+    data: { available: false },
+  });
 
-  await connectionDb.query(
-    `
-      INSERT INTO "myBooks" ("userId", "bookId")
-      VALUES ($1, $2);
-    `,
-    [userId, bookId]
-  );
+  await prisma.mybooks.create({
+    data: {
+      userId,
+      bookId,
+    },
+  });
 }
 
-async function findAllMyBooks(userId: number) {
-  return await connectionDb.query(
-    `
-      SELECT u.name as "userName", b.name as "bookName", b.author as "bookAuthor" 
-      FROM "myBooks" m
-      JOIN users u ON m."userId" = u.id
-      JOIN books b ON m."bookId" = b.id 
-      WHERE u.id = $1;
-  `,
-    [userId]
-  );
+async function findAllMyBooks(userId: number): Promise<
+  (mybooks & {
+    users: users;
+    books: books;
+  })[]
+> {
+  return await prisma.mybooks.findMany({
+    where: { userId },
+    include: {
+      users: true,
+      books: true,
+    },
+  });
 }
 
 export default {
