@@ -27,9 +27,7 @@ export const authValidation = (
       if (error !== null) throw unauthorizedError();
 
       const { id } = decoded as ITokenPayload;
-      const {
-        rows: [user],
-      } = await userRepositories.findById(id);
+      const user = await userRepositories.findById(id);
       if (!user) throw unauthorizedError();
 
       res.locals.user = user;

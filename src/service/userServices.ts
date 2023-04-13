@@ -11,9 +11,8 @@ async function create({ name, email, password }: UserCreate): Promise<void> {
 }
 
 async function signin(email: string, password: string): Promise<string> {
-  const { rows: users } = await userRepositories.findByEmail(email);
-  if (users.length === 0) throw invalidCredentialsError();
-  const [user] = users;
+  const user = await userRepositories.findByEmail(email);
+  if (!user) throw invalidCredentialsError();
 
   const passwordOk = await bcrypt.compare(password, user.password);
   if (!passwordOk) throw invalidCredentialsError();
