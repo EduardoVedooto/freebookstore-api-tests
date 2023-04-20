@@ -1,5 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+export let prisma: PrismaClient;
 
-export default prisma;
+export function connectDb(): void {
+  if (prisma) return;
+  prisma = new PrismaClient();
+}
+
+export async function disconnectDB(): Promise<void> {
+  await prisma?.$disconnect();
+}
