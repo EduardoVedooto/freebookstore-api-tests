@@ -12,8 +12,16 @@ bookRouter.post(
   validateSchema(bookSchemma),
   bookControllers.create
 );
+
 bookRouter.get("/", authValidation, bookControllers.findAll);
-bookRouter.post("/take-book/:id", authValidation, bookControllers.takeBook);
+
+bookRouter.post(
+  "/take-book/:id",
+  validateSchema(bookSchemma),
+  authValidation,
+  bookControllers.takeBook
+);
+
 bookRouter.get("/my-books", authValidation, bookControllers.findAllMyBooks);
 
 export default bookRouter;
