@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import userServices from "service/userServices";
+import userServices from "../service/userServices";
 import { UserCreate } from "../interfaces/UserCreate";
-import { UserAuth } from "interfaces/UserAuth";
+import { UserAuth } from "../interfaces/UserAuth";
 
 async function create(
   req: Request,

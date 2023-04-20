@@ -1,5 +1,5 @@
 import { users } from "@prisma/client";
-import prisma from "config/database";
+import prisma from "../config/database";
 
 async function create({ name, email, password }): Promise<void> {
   await prisma.users.create({

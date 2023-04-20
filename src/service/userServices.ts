@@ -1,7 +1,7 @@
-import userRepositories from "repositories/userRepositories";
+import userRepositories from "../repositories/userRepositories";
 import bcrypt from "bcrypt";
-import { UserCreate } from "interfaces/UserCreate";
-import { invalidCredentialsError } from "errors";
+import { UserCreate } from "../interfaces/UserCreate";
+import { invalidCredentialsError } from "../errors";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 

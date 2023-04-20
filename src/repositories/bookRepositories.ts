@@ -1,5 +1,5 @@
-import { BookCreate } from "interfaces/BookCreate";
-import prisma from "config/database";
+import { BookCreate } from "../interfaces/BookCreate";
+import prisma from "../config/database";
 import { books, mybooks, users } from "@prisma/client";
 
 async function create({
