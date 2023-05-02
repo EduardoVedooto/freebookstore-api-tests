@@ -4,6 +4,9 @@ import cors from "cors";
 import routes from "./routes";
 import { handleApplicationErrors } from "./middlewares/errorMiddleware";
 import { connectDb, disconnectDB } from "./config/database";
+import loadEnvs from "./config/envs";
+
+loadEnvs();
 
 const app = express();
 

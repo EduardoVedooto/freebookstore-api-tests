@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import { UserCreate } from "../interfaces/UserCreate";
 import { invalidCredentialsError } from "../errors";
 import jwt from "jsonwebtoken";
-import "dotenv/config";
 
 async function create({ name, email, password }: UserCreate): Promise<void> {
   const hashPassword: string = await bcrypt.hash(password, 10);

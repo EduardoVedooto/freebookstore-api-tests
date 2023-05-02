@@ -1,5 +1,4 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
-import "dotenv/config";
 import { unauthorizedError } from "../errors/index";
 import userRepositories from "../repositories/userRepositories";
 import { NextFunction, Request, Response } from "express";
