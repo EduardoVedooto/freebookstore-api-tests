@@ -1,13 +1,13 @@
 import supertest from "supertest";
 
 import app, { init } from "../../src/app";
-import { prisma } from "../../src/config/database";
+import { cleanDatabase } from "../utils/helpers";
 
 const appForTest = supertest(app);
 
 beforeAll(async () => {
   await init();
-  await prisma.users.deleteMany();
+  await cleanDatabase();
 });
 
 describe("POST /users/create", () => {
